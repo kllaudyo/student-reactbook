@@ -12,13 +12,21 @@
     <script src="react/react-dom.min.js"></script>
     <script>
       var Header = React.createClass({
+
         propTypes: {
-          text: React.PropTypes.string.isRequired
+          text: React.PropTypes.string.isRequired,
+          id: React.PropTypes.string
+        },
+
+        getDefaultProps : function(){
+          return {
+            id: 'myHeader'
+          }
         },
 
         render : function(){
           return React.DOM.h1({
-            id:"myHeading",
+            id:this.props.id,
             style: {
               background: "black",
               color:"white",
@@ -29,7 +37,7 @@
       });
 
       ReactDOM.render(
-        React.createElement(Header, {text: "Hello World!"}),
+        React.createElement(Header, {text: "Hello World!", id:'claudio'}),
         document.getElementById('main')
       );
     </script>
