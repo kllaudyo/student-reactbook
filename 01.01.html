@@ -11,15 +11,22 @@
     <script src="react/react.min.js"></script>
     <script src="react/react-dom.min.js"></script>
     <script>
-      ReactDOM.render(
-        React.DOM.h1({
+
+       var Header = React.createClass({
+        render : function(){
+          return React.DOM.h1({
             id:"myHeading",
-            style:{
-                background: "black",
-                color:"white",
-                fontFamily:"Verdana"
+            style: {
+              background: "black",
+              color:"white",
+              fontFamily:"Verdana"
             }
-        },"Hello World"),
+          },"Hello World");
+        }
+      });
+
+      ReactDOM.render(
+        React.createElement(Header),
         document.getElementById('main')
       );
     </script>
