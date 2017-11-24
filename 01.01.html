@@ -21,12 +21,12 @@
               color:"white",
               fontFamily:"Verdana"
             }
-          },"Hello World");
+          },this.props.text);
         }
       });
 
       ReactDOM.render(
-        React.createElement(Header),
+        React.createElement(Header, {text: "Hello World!"}),
         document.getElementById('main')
       );
     </script>
