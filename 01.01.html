@@ -11,8 +11,11 @@
     <script src="react/react.min.js"></script>
     <script src="react/react-dom.min.js"></script>
     <script>
+      var Header = React.createClass({
+        propTypes: {
+          text: React.PropTypes.string.isRequired
+        },
 
-       var Header = React.createClass({
         render : function(){
           return React.DOM.h1({
             id:"myHeading",
