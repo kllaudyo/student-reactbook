@@ -1,82 +1,86 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>TextArea com Estado</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TextArea com Estado</title>
 </head>
 <body>
-  <div class="main"></div>
-  <script src="react/react.min.js"></script>
-  <script src="react/react-dom.min.js"></script>
-  <script>
-    var TextAreaComContador = React.createClass({
+    <div class="main"></div>
+    <script src="react/react.min.js"></script>
+    <script src="react/react-dom.min.js"></script>
+    <script>
+        var logMixin = {
+            _log: function(methodName, args){
+                console.log(methodName, args);
+            },
 
-        propTypes : {
-            text: React.PropTypes.string
-        },
+            componentWillUpdate: function(){
+                this._log("componentWillUpdate", arguments);
+            },
 
-        getInitialState: function(){
-            return {
-                text: this.props.text
+            componentDidUpdate: function(){
+                this._log("componentDidUpdate", arguments);
+            },
+
+            componentWillMount: function(){
+                this._log("componentWillMount", arguments);
+            },
+
+            componentDidMount: function(){
+                this._log("componentDidMount", arguments);
+            },
+
+            componentWillUnmount: function () {
+                this._log("componentWillUnmount", arguments);
             }
-        },
+        };
 
-        _textChange : function(evt){
-            this.setState({
-                text: evt.target.value
-            });
-        },
+        var TextAreaComContador = React.createClass({
 
-        getDefaultProps : function(){
-            return {
-                text: ''
+            name: 'TextAreaComContador',
+            mixins: [logMixin],
+            
+            propTypes : {
+                text: React.PropTypes.string
+            },
+
+            getInitialState: function(){
+                return {
+                    text: this.props.text
+                }
+            },
+
+            _textChange : function(evt){
+                this.setState({
+                    text: evt.target.value
+                });
+            },
+
+            getDefaultProps : function(){
+                return {
+                    text: ''
+                }
+            },
+
+            render : function(){
+                return React.DOM.div(null,
+                    React.DOM.textarea({
+                        value: this.state.text,
+                        onChange: this._textChange
+                    }),
+                    React.DOM.h3(null, this.state.text.length)
+                );
             }
-        },
 
-        //Demonstração do ciclo de vida
-        _log: function(methodName, args){
-            console.log(methodName, args);
-        },
+        });
 
-        componentWillUpdate: function(){
-            this._log("componentWillUpdate", arguments);
-        },
-
-        componentDidUpdate: function(){
-            this._log("componentDidUpdate", arguments);
-        },
-
-        componentWillMount: function(){
-            this._log("componentWillMount", arguments);
-        },
-
-        componentDidMount: function(){
-            this._log("componentDidMount", arguments);
-        },
-
-        componentWillUnmount: function () {
-            this._log("componentWillUnmount", arguments);
-        },
-
-        render : function(){
-            return React.DOM.div(null,
-                React.DOM.textarea({
-                    value: this.state.text,
-                    onChange: this._textChange
-                }),
-                React.DOM.h3(null, this.state.text.length)
-            );
-        }
-
-    });
-
-    ReactDOM.render(
-        React.createElement(TextAreaComContador,{text:"Claudio Acioli"}),
-        document.querySelector(".main")
-    );
-  </script>
+        ReactDOM.render(
+            React.createElement(TextAreaComContador,{text:"Claudio Acioli"}),
+            document.querySelector(".main")
+        );
+    </script>
 </body>
 </html>
