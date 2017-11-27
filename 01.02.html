@@ -12,46 +12,70 @@
   <script src="react/react.min.js"></script>
   <script src="react/react-dom.min.js"></script>
   <script>
-
     var TextAreaComContador = React.createClass({
 
-      propTypes : {
-        text: React.PropTypes.string
-      },
+        propTypes : {
+            text: React.PropTypes.string
+        },
 
-      getInitialState: function(){
-        return {
-          text: this.props.text
+        getInitialState: function(){
+            return {
+                text: this.props.text
+            }
+        },
+
+        _textChange : function(evt){
+            this.setState({
+                text: evt.target.value
+            });
+        },
+
+        getDefaultProps : function(){
+            return {
+                text: ''
+            }
+        },
+
+        //Demonstração do ciclo de vida
+        _log: function(methodName, args){
+            console.log(methodName, args);
+        },
+
+        componentWillUpdate: function(){
+            this._log("componentWillUpdate", arguments);
+        },
+
+        componentDidUpdate: function(){
+            this._log("componentDidUpdate", arguments);
+        },
+
+        componentWillMount: function(){
+            this._log("componentWillMount", arguments);
+        },
+
+        componentDidMount: function(){
+            this._log("componentDidMount", arguments);
+        },
+
+        componentWillUnmount: function () {
+            this._log("componentWillUnmount", arguments);
+        },
+
+        render : function(){
+            return React.DOM.div(null,
+                React.DOM.textarea({
+                    value: this.state.text,
+                    onChange: this._textChange
+                }),
+                React.DOM.h3(null, this.state.text.length)
+            );
         }
-      },
-
-      _textChange : function(evt){
-        this.setState({
-          text: evt.target.value
-        });
-      },
-
-      getDefaultProps : function(){
-        return {
-          text: ''
-        }
-      },
-
-      render : function(){
-        return React.DOM.div(null,
-          React.DOM.textarea({
-            value: this.state.text,
-            onChange: this._textChange
-          }),
-          React.DOM.h3(null, this.state.text.length)
-        );
-      }
 
     });
 
     ReactDOM.render(
-      React.createElement(TextAreaComContador,{text:"Claudio Acioli"}),
-      document.querySelector(".main")
+        React.createElement(TextAreaComContador,{text:"Claudio Acioli"}),
+        document.querySelector(".main")
     );
   </script>
 </body>
