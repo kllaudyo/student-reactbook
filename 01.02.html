@@ -14,7 +14,7 @@
     <script>
         var logMixin = {
             _log: function(methodName, args){
-                console.log(methodName, args);
+                console.log(this.name + '::' + methodName, args);
             },
 
             componentWillUpdate: function(){
@@ -42,7 +42,7 @@
 
             name: 'TextAreaComContador',
             mixins: [logMixin],
-            
+
             propTypes : {
                 text: React.PropTypes.string
             },
