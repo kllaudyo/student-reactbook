@@ -12,7 +12,13 @@ var data = [
 ];
 
 var Excel = React.createClass({
+
+    getInitialState : function(){
+        return { data : this.props.initialData };
+    },
+
     displayName : 'Excel',
+
     render : function(){
         return (
             React.DOM.table(
@@ -25,6 +31,19 @@ var Excel = React.createClass({
                             return React.DOM.th({key:index}, title)
                         })
                     )
+                ),
+                React.DOM.tbody(
+                    null,
+                    this.state.data.map(function(row, index){
+                        return (
+                            React.DOM.tr(
+                                {key: index},
+                                row.map(function(cell, index){
+                                    return React.DOM.td({key: index}, cell)
+                                })
+                            )
+                        );
+                    })
                 )
             )
         );
