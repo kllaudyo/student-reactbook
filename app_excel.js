@@ -10,6 +10,7 @@ var Excel = React.createClass({
     // Não é necessário quando usado o JSX
     displayName : 'Excel',
     _preSearchData: null,
+    _log: [],
 
     /*======================================================
      METODOS REACT
@@ -49,7 +50,7 @@ var Excel = React.createClass({
     ======================================================*/
 
     _showEditor : function(e){
-        this.setState({
+        this._logSetState({
             edit : {
                 row: parseInt(e.target.dataset.row, 10), //dataset refere-se ao attr data-*
                 cell: e.target.cellIndex
@@ -59,14 +60,14 @@ var Excel = React.createClass({
 
     _toggleSearch : function(){
         if(this.state.search) {
-            this.setState({
+            this._logSetState({
                 data: this._preSearchData,
                 search: false
             });
             this._preSearchData = null;
         }else{
             this._preSearchData = this.state.data;
-            this.setState({
+            this._logSetState({
                 search:true
             });
         }
@@ -78,7 +79,7 @@ var Excel = React.createClass({
         var data = this.state.data.slice().sort(function (a, b) {
             return descending ? (a[index] < b[index] ? 1 : -1) : (a[index] > b[index] ? 1 : -1);
         });
-        this.setState({
+        this._logSetState({
             sortby : index,
             descending : descending,
             data : data
@@ -88,7 +89,7 @@ var Excel = React.createClass({
     _search : function(e){
         var text = e.target.value.toLowerCase();
         if(!text){
-            this.setState({
+            this._logSetState({
                 data: this._preSearchData
             });
             return;
@@ -97,7 +98,7 @@ var Excel = React.createClass({
         var searchData = this._preSearchData.filter(function(row){
             return row[idx].toString().toLowerCase().indexOf(text) > -1;
         });
-        this.setState({
+        this._logSetState({
             data:searchData
         })
     },
@@ -107,10 +108,21 @@ var Excel = React.createClass({
         var input = e.target.firstChild;
         var data = this.state.data.slice();
         data[this.state.edit.row][this.state.edit.cell] = input.value;
-        this.setState({
+        this._logSetState({
             data: data,
             edit: null
         });
+    },
+
+    _logSetState : function(newState){
+        this._log.push(
+            JSON.parse(
+                JSON.stringify(
+                    this._log.length===0 ? this.state: newState
+                )
+            )
+        );
+        this.setState(newState);
     },
 
     /*======================================================
