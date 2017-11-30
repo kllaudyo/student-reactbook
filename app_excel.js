@@ -37,6 +37,16 @@ var Excel = React.createClass({
         )
     },
 
+    componentDidMount: function(){
+        document.onkeydown = function(me){
+            return function(e){
+                if(e.altKey && e.shiftKey && e.keyCode === 82){ //ALT+SHIFT+R
+                    me._replay();
+                }
+            };
+        }(this); //Atenção para esta antiga técnica de passar o {this} de um contexto para outro.
+    },
+
     render : function(){
         return React.DOM.div(
             null,
@@ -123,6 +133,21 @@ var Excel = React.createClass({
             )
         );
         this.setState(newState);
+    },
+
+    _replay : function(){
+        if(this._log.length === 0){
+            console.warn('Não existe estado para apresentar repetição!');
+            return;
+        }
+        var idx = -1;
+        var interval = setInterval(function () {
+            idx++;
+            if(idx === this._log.length - 1){
+                clearInterval(interval);
+            }
+            this.setState(this._log[idx]);
+        }.bind(this),2000); //passando o contexto {this} com bind que tem suporte apartir do MSIE-9
     },
 
     /*======================================================
