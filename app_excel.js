@@ -84,7 +84,12 @@ var Excel = React.createClass({
     },
 
     _renderToolbar : function(){
-        //Todo para fazer...
+        return React.DOM.button(
+            {
+                className:'toolbar'
+            },
+            'search'
+        );
     },
 
     _renderTable : function(){
