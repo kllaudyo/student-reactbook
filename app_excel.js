@@ -64,8 +64,22 @@ var Excel = React.createClass({
         });
     },
 
+    _save : function(e){
+        e.preventDefault();
+        var input = e.target.firstChild;
+        var data = this.state.data.slice();
+        data[this.state.edit.row][this.state.edit.cell] = input.value;
+        this.setState({
+            data: data,
+            edit: null
+        });
+    },
+
     render : function(){
-        var sortby = this.state.sortby, descending = this.state.descending, edit = this.state.edit;
+        var sortby = this.state.sortby,
+            descending = this.state.descending,
+            edit = this.state.edit
+            save = this._save;
         return (
             React.DOM.table(
                 null,
@@ -92,7 +106,7 @@ var Excel = React.createClass({
                                     var content = cell;
                                     if(edit && edit.row === rowIndex && edit.cell === cellIndex){
                                         content = React.DOM.form(
-                                            null,
+                                            { onSubmit : save },
                                             React.DOM.input({
                                                 type: 'text',
                                                 defaultValue : cell
