@@ -17,7 +17,11 @@ var Excel = React.createClass({
         return { data : this.props.initialData };
     },
 
+    // Apresenta nome do componente em possiveis logs.
+    // Não é necessário quando usado o JSX
     displayName : 'Excel',
+
+
 
     render : function(){
         return (
