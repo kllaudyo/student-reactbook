@@ -64,6 +64,10 @@ var Excel = React.createClass({
         });
     },
 
+    _toggleSearch : function(){
+        alert('Clicou aqui');
+    },
+
     _save : function(e){
         e.preventDefault();
         var input = e.target.firstChild;
@@ -86,9 +90,34 @@ var Excel = React.createClass({
     _renderToolbar : function(){
         return React.DOM.button(
             {
+                onClick: this._toggleSearch,
                 className:'toolbar'
             },
             'search'
+        );
+    },
+
+    _renderSearch : function(){
+
+        if(!this.state.search){
+            return null;
+        }
+
+        return (
+            React.DOM.tr(
+                null,
+                this.props.headers.map(function(head, index){
+                    return React.DOM.td(
+                        { key: index },
+                        React.DOM.input(
+                            {
+                                type: 'text',
+                                'data-idx' : index
+                            }
+                        )
+                    )
+                })
+            )
         );
     },
 
@@ -114,6 +143,7 @@ var Excel = React.createClass({
                 ),
                 React.DOM.tbody(
                     {onDoubleClick: this._showEditor},
+                    this._renderSearch(),
                     this.state.data.map(function(row, rowIndex){
                         return (
                             React.DOM.tr(
