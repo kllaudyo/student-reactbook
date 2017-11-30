@@ -18,6 +18,7 @@ var Excel = React.createClass({
             data : this.props.initialData,
             sortby: null,
             descending: false,
+            //edit: {row: 0, cell: 0}
             edit: null //{row: index, cell: index}
         };
     },
@@ -64,7 +65,7 @@ var Excel = React.createClass({
     },
 
     render : function(){
-        var sortby = this.state.sortby, descending = this.state.descending;
+        var sortby = this.state.sortby, descending = this.state.descending, edit = this.state.edit;
         return (
             React.DOM.table(
                 null,
@@ -81,18 +82,30 @@ var Excel = React.createClass({
                     )
                 ),
                 React.DOM.tbody(
-                    null,
+                    {onDoubleClick: this._showEditor},
                     this.state.data.map(function(row, rowIndex){
                         return (
                             React.DOM.tr(
                                 {key: rowIndex},
                                 row.map(function(cell, cellIndex){
+
+                                    var content = cell;
+                                    if(edit && edit.row === rowIndex && edit.cell === cellIndex){
+                                        content = React.DOM.form(
+                                            null,
+                                            React.DOM.input({
+                                                type: 'text',
+                                                defaultValue : cell
+                                            })
+                                        );
+                                    }
+
                                     return React.DOM.td(
                                         {
                                             key: cellIndex,
                                             'data-row': rowIndex
                                         },
-                                        cell
+                                        content
                                     )
                                 })
                             )
