@@ -59,7 +59,18 @@ var Excel = React.createClass({
     },
 
     _toggleSearch : function(){
-        alert('Clicou aqui');
+        if(this.state.search) {
+            this.setState({
+                data: this._preSearchData,
+                search: false
+            });
+            this._preSearchData = null;
+        }else{
+            this._preSearchData = this.state.data;
+            this.setState({
+                search:true
+            });
+        }
     },
 
     _save : function(e){
