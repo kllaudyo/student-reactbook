@@ -21,7 +21,16 @@ var Excel = React.createClass({
     // Não é necessário quando usado o JSX
     displayName : 'Excel',
 
-
+    propTypes : {
+        headers : React.PropTypes.arrayOf(
+            React.PropTypes.string
+        ),
+        initialData : React.PropTypes.arrayOf(
+            React.PropTypes.arrayOf(
+                React.PropTypes.string
+            )
+        )
+    },
 
     render : function(){
         return (
