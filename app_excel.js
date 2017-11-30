@@ -14,7 +14,11 @@ var data = [
 var Excel = React.createClass({
 
     getInitialState : function(){
-        return { data : this.props.initialData };
+        return {
+            data : this.props.initialData,
+            sortby: null,
+            descending: false
+        };
     },
 
     // Apresenta nome do componente em possiveis logs.
@@ -34,15 +38,22 @@ var Excel = React.createClass({
 
     //Metodo privado para ordenação
     _sort : function(e){
+
         var index = e.target.cellIndex;
-        this.setState(function(oldState){
-            return {data : oldState.data.slice().sort(function(a,b){
-                return a[index] > b[index] ? 1 : -1;
-            })};
-        })
+        var descending = this.state.sortby === index && !this.state.descending;
+        var data = this.state.data.slice().sort(function (a, b) {
+            return descending ? (a[index] < b[index] ? 1 : -1) : (a[index] > b[index] ? 1 : -1);
+        });
+
+        this.setState({
+            sortby : index,
+            descending : descending,
+            data : data
+        });
     },
 
     render : function(){
+        var sortby = this.state.sortby, descending = this.state.descending;
         return (
             React.DOM.table(
                 null,
@@ -51,6 +62,9 @@ var Excel = React.createClass({
                     React.DOM.tr(
                         null,
                         this.props.headers.map(function(title, index){
+                            if(sortby === index){
+                                title += descending ? '\u2191' : '\u2193';
+                            }
                             return React.DOM.th({key:index}, title)
                         })
                     )
