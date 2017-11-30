@@ -176,17 +176,47 @@ var Excel = React.createClass({
         }.bind(this),2000); //passando o contexto {this} com bind que tem suporte apartir do MSIE-9
     },
 
+    _download : function(format, ev){
+        var contents = format === 'json'
+            ? JSON.stringify(this.state.data)
+            : this.state.data.reduce(function(result, row){
+                return result + '"' + row.join('","') + '"\n';
+            },'')
+        ;
+
+        console.log(contents);
+
+        var URL = window.URL || window.webkitURL;
+        var blob = new Blob([contents], {type: 'text/' + format});
+        ev.target.href = URL.createObjectURL(blob);
+        ev.target.download = 'data.'+format;
+    },
+
     /*======================================================
      METODOS AUXILIARES - Renderizadores
     ======================================================*/
 
     _renderToolbar : function(){
-        return React.DOM.button(
-            {
-                onClick: this._toggleSearch,
-                className:'toolbar'
-            },
-            this.state.search?'fechar pesquisa':'abrir pesquisa'
+        return React.DOM.div(
+            {className:'toolbar'},
+            React.DOM.button(
+                {onClick: this._toggleSearch},
+                this.state.search?'fechar pesquisa':'abrir pesquisa'
+            ),
+            React.DOM.a(
+                {
+                    onClick:this._download.bind(this, 'json'),
+                    href:'data.json'
+                },
+                'Exportar JSON'
+            ),
+            React.DOM.a(
+                {
+                    onClick:this._download.bind(this, 'csv'),
+                    href:'data.csv'
+                },
+                'Exportar CSV'
+            )
         );
     },
 
