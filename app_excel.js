@@ -1,3 +1,6 @@
+/**
+ * classe para componente Excel, uma tabela elegante!
+ */
 var Excel = React.createClass({
 
     /*======================================================
@@ -9,8 +12,9 @@ var Excel = React.createClass({
     _preSearchData: null,
 
     /*======================================================
-     METODOS AUXILIARES
+     METODOS REACT
     ======================================================*/
+
     getInitialState : function(){
         return {
             data : this.props.initialData,
@@ -32,23 +36,18 @@ var Excel = React.createClass({
         )
     },
 
-    //Metodo privado para ordenação
-    _sort : function(e){
-
-        var index = e.target.cellIndex;
-        var descending = this.state.sortby === index && !this.state.descending;
-        var data = this.state.data.slice().sort(function (a, b) {
-            return descending ? (a[index] < b[index] ? 1 : -1) : (a[index] > b[index] ? 1 : -1);
-        });
-
-        this.setState({
-            sortby : index,
-            descending : descending,
-            data : data
-        });
+    render : function(){
+        return React.DOM.div(
+            null,
+            this._renderToolbar(),
+            this._renderTable()
+        );
     },
 
-    //Metodo para edição
+    /*======================================================
+     METODOS AUXILIARES - Funcionalidades
+    ======================================================*/
+
     _showEditor : function(e){
         this.setState({
             edit : {
@@ -73,6 +72,19 @@ var Excel = React.createClass({
         }
     },
 
+    _sort : function(e){
+        var index = e.target.cellIndex;
+        var descending = this.state.sortby === index && !this.state.descending;
+        var data = this.state.data.slice().sort(function (a, b) {
+            return descending ? (a[index] < b[index] ? 1 : -1) : (a[index] > b[index] ? 1 : -1);
+        });
+        this.setState({
+            sortby : index,
+            descending : descending,
+            data : data
+        });
+    },
+
     _save : function(e){
         e.preventDefault();
         var input = e.target.firstChild;
@@ -85,15 +97,8 @@ var Excel = React.createClass({
     },
 
     /*======================================================
-     RENDERIZADORES
+     METODOS AUXILIARES - Renderizadores
     ======================================================*/
-    render : function(){
-        return React.DOM.div(
-            null,
-            this._renderToolbar(),
-            this._renderTable()
-        );
-    },
 
     _renderToolbar : function(){
         return React.DOM.button(
@@ -106,11 +111,9 @@ var Excel = React.createClass({
     },
 
     _renderSearch : function(){
-
         if(!this.state.search){
             return null;
         }
-
         return (
             React.DOM.tr(
                 null,
