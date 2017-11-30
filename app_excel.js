@@ -1,18 +1,16 @@
-var headers = ["Livro","Autores","Linguagem","Publicado em", "Vendas"];
-var data = [
-    ["Don Quixote","Miguel de Cervantes","Espanhol","1612","500 milhões"],
-    ["Um Conto de Duas Cidades","Charles Dickens","Inglês","1859","200 milhões"],
-    ["O Senhor dos Anéis","J. R. R. Tolkien","Inglês","1954–1955","150 milhões"],
-    ["O Pequeno Príncipe","Antoine de Saint-Exupéry","Francês","1943","140 milhões"],
-    ["Harry Potter e a Pedra Filosofal","J. K. Rowling","Inglês","1997","107 milhões"],
-    ["O Hobbit","J. R. R. Tolkien","Inglês","1937","100 milhões"],
-    ["O Caso dos Dez Negrinhos","Agatha Christie","Inglês","1939","100 milhões"],
-    ["O Sonho da Câmara Vermelha","Cao Xueqin","Chinês","1754–1791","100 milhões"],
-    ["Ela, a Feiticeira","H. Rider Haggard","Inglês","1887","100 milhões"]
-];
-
 var Excel = React.createClass({
 
+    /*======================================================
+      PROPRIEDADES
+    ======================================================*/
+    // Apresenta nome do componente em possiveis logs.
+    // Não é necessário quando usado o JSX
+    displayName : 'Excel',
+    _preSearchData: null,
+
+    /*======================================================
+     METODOS AUXILIARES
+    ======================================================*/
     getInitialState : function(){
         return {
             data : this.props.initialData,
@@ -22,10 +20,6 @@ var Excel = React.createClass({
             search: false
         };
     },
-
-    // Apresenta nome do componente em possiveis logs.
-    // Não é necessário quando usado o JSX
-    displayName : 'Excel',
 
     propTypes : {
         headers : React.PropTypes.arrayOf(
@@ -79,6 +73,9 @@ var Excel = React.createClass({
         });
     },
 
+    /*======================================================
+     RENDERIZADORES
+    ======================================================*/
     render : function(){
         return React.DOM.div(
             null,
@@ -124,7 +121,7 @@ var Excel = React.createClass({
     _renderTable : function(){
         var sortby = this.state.sortby,
             descending = this.state.descending,
-            edit = this.state.edit
+            edit = this.state.edit,
             save = this._save;
         return (
             React.DOM.table(
@@ -177,11 +174,3 @@ var Excel = React.createClass({
         );
     }
 });
-
-ReactDOM.render(
-    React.createElement(Excel, {
-        headers: headers,
-        initialData: data
-    }),
-    document.querySelector(".main")
-);
