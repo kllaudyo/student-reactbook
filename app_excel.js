@@ -11,6 +11,7 @@ var Excel = React.createClass({
     displayName : 'Excel',
     _preSearchData: null,
     _log: [],
+    _indexState : 0,
 
     /*======================================================
      METODOS REACT
@@ -42,6 +43,16 @@ var Excel = React.createClass({
             return function(e){
                 if(e.altKey && e.shiftKey && e.keyCode === 82){ //ALT+SHIFT+R
                     me._replay();
+                    return;
+                }
+
+                if(e.altKey  && e.shiftKey && e.keyCode === 90){ //ALT+SHIFT+Z
+                    me._redo();
+                    return;
+                }
+
+                if(e.altKey && e.keyCode === 90){ //ALT+Z
+                    me._undo();
                 }
             };
         }(this); //Atenção para esta antiga técnica de passar o {this} de um contexto para outro.
@@ -133,6 +144,21 @@ var Excel = React.createClass({
             )
         );
         this.setState(newState);
+        this._indexState++;
+    },
+
+    _redo : function() {
+        if(this._indexState >= this._log.length){
+            return;
+        }
+        this.setState(this._log[this._indexState++]);
+    },
+
+    _undo : function(){
+        if(this._indexState===0){
+            return;
+        }
+        this.setState(this._log[--this._indexState]);
     },
 
     _replay : function(){
