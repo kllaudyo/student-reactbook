@@ -85,6 +85,23 @@ var Excel = React.createClass({
         });
     },
 
+    _search : function(e){
+        var text = e.target.value.toLowerCase();
+        if(!text){
+            this.setState({
+                data: this._preSearchData
+            });
+            return;
+        }
+        var idx = e.target.dataset.idx; //refere-se ao attr data-idx
+        var searchData = this._preSearchData.filter(function(row){
+            return row[idx].toString().toLowerCase().indexOf(text) > -1;
+        });
+        this.setState({
+            data:searchData
+        })
+    },
+
     _save : function(e){
         e.preventDefault();
         var input = e.target.firstChild;
@@ -116,7 +133,7 @@ var Excel = React.createClass({
         }
         return (
             React.DOM.tr(
-                null,
+                {onChange: this._search}, //Mágica demonstração de propagação de eventos React
                 this.props.headers.map(function(head, index){
                     return React.DOM.td(
                         { key: index },
