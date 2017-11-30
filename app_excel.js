@@ -123,7 +123,7 @@ var Excel = React.createClass({
                 onClick: this._toggleSearch,
                 className:'toolbar'
             },
-            'search'
+            this.state.search?'fechar pesquisa':'abrir pesquisa'
         );
     },
 
