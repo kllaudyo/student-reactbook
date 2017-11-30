@@ -18,8 +18,8 @@ var Excel = React.createClass({
             data : this.props.initialData,
             sortby: null,
             descending: false,
-            //edit: {row: 0, cell: 0}
-            edit: null //{row: index, cell: index}
+            edit: null, //{row: index, cell: index}
+            search: false
         };
     },
 
@@ -76,6 +76,18 @@ var Excel = React.createClass({
     },
 
     render : function(){
+        return React.DOM.div(
+            null,
+            this._renderToolbar(),
+            this._renderTable()
+        );
+    },
+
+    _renderToolbar : function(){
+        //Todo para fazer...
+    },
+
+    _renderTable : function(){
         var sortby = this.state.sortby,
             descending = this.state.descending,
             edit = this.state.edit
