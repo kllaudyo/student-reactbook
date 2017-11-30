@@ -32,12 +32,22 @@ var Excel = React.createClass({
         )
     },
 
+    //Metodo privado para ordenação
+    _sort : function(e){
+        var index = e.target.cellIndex;
+        this.setState(function(oldState){
+            return {data : oldState.data.slice().sort(function(a,b){
+                return a[index] > b[index] ? 1 : -1;
+            })};
+        })
+    },
+
     render : function(){
         return (
             React.DOM.table(
                 null,
                 React.DOM.thead(
-                    null,
+                    {onClick: this._sort},
                     React.DOM.tr(
                         null,
                         this.props.headers.map(function(title, index){
