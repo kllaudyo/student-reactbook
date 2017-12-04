@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>JSX e Transpilador babel/browser</title>
+</head>
+<body>
+    <div class="main"></div>
+    <script src="react/react.js"></script>
+    <script src="react/react-dom.js"></script>
+    <script src="babel/browser.js"></script>
+    <script type="text/babel">
+        ReactDOM.render(
+            <h1 id="my-heading">
+                <span><em>Hell</em>o</span> world!
+            </h1>
+            ,document.querySelector('.main')
+        );
+    </script>
+</body>
+</html>
