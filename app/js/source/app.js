@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Log from './components/Logo';
+import Logo from './components/Logo';
 
-React.render(
+ReactDOM.render(
     <h1>
         <Logo /> Welcome to The App!
     </h1>,
