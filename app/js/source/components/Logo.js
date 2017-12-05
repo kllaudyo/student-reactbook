@@ -1,4 +1,4 @@
-var React = require('react');
+import React from 'react';
 
 var Logo = React.createClass({
     render : function(){
@@ -6,4 +6,4 @@ var Logo = React.createClass({
     }
 });
 
-module.exports = Logo;
+export default Logo;
