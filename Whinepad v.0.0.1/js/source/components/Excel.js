@@ -1,44 +1,48 @@
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+
 /**
  * classe para componente Excel, uma tabela elegante!
  */
-var Excel = React.createClass({
+class Excel extends Component{
 
     /*======================================================
       PROPRIEDADES
     ======================================================*/
     // Apresenta nome do componente em possiveis logs.
     // Não é necessário quando usado o JSX
-    displayName : 'Excel',
-    _preSearchData: null,
-    _log: [],
-    _indexState : 0,
 
-    /*======================================================
-     METODOS REACT
-    ======================================================*/
-
-    getInitialState : function(){
-        return {
-            data : this.props.initialData,
+    constructor(props) {
+        super(props);
+        this.state = {
+            data:this.props.initialData,
             sortby: null,
             descending: false,
             edit: null, //{row: index, cell: index}
             search: false
         };
-    },
 
-    propTypes : {
-        headers : React.PropTypes.arrayOf(
-            React.PropTypes.string
-        ),
-        initialData : React.PropTypes.arrayOf(
-            React.PropTypes.arrayOf(
-                React.PropTypes.string
-            )
-        )
-    },
+        this._preSearchData= null;
+        this._log=[];
+        this._indexState=0;
 
-    componentDidMount: function(){
+        this._showEditor = this._showEditor.bind(this);
+        this._toggleSearch = this._toggleSearch.bind(this);
+        this._sort = this._sort.bind(this);
+        this._search = this._search.bind(this);
+        this._save = this._save.bind(this);
+        this._logSetState = this._logSetState.bind(this);
+        this._redo = this._redo.bind(this);
+        this._undo = this._undo.bind(this);
+        this._replay = this._replay.bind(this);
+        this._download = this._download.bind(this);
+    }
+
+    /*======================================================
+     METODOS REACT
+    ======================================================*/
+
+    componentDidMount(){
         document.onkeydown = function(me){
             return function(e){
                 if(e.altKey && e.shiftKey && e.keyCode === 82){ //ALT+SHIFT+R
@@ -56,30 +60,31 @@ var Excel = React.createClass({
                 }
             };
         }(this); //Atenção para esta antiga técnica de passar o {this} de um contexto para outro.
-    },
+    }
 
-    render : function(){
-        return React.DOM.div(
-            null,
-            this._renderToolbar(),
-            this._renderTable()
+    render(){
+        return (
+            <div className="Excel">
+                {this._renderToolbar()}
+                {this._renderTable()}
+            </div>
         );
-    },
+    }
 
     /*======================================================
      METODOS AUXILIARES - Funcionalidades
     ======================================================*/
 
-    _showEditor : function(e){
+    _showEditor(e){
         this._logSetState({
             edit : {
                 row: parseInt(e.target.dataset.row, 10), //dataset refere-se ao attr data-*
                 cell: e.target.cellIndex
             }
         });
-    },
+    }
 
-    _toggleSearch : function(){
+    _toggleSearch(){
         if(this.state.search) {
             this._logSetState({
                 data: this._preSearchData,
@@ -92,9 +97,9 @@ var Excel = React.createClass({
                 search:true
             });
         }
-    },
+    }
 
-    _sort : function(e){
+    _sort(e){
         var index = e.target.cellIndex;
         var descending = this.state.sortby === index && !this.state.descending;
         var data = this.state.data.slice().sort(function (a, b) {
@@ -105,9 +110,9 @@ var Excel = React.createClass({
             descending : descending,
             data : data
         });
-    },
+    }
 
-    _search : function(e){
+    _search(e){
         var text = e.target.value.toLowerCase();
         if(!text){
             this._logSetState({
@@ -122,9 +127,9 @@ var Excel = React.createClass({
         this._logSetState({
             data:searchData
         })
-    },
+    }
 
-    _save : function(e){
+    _save(e){
         e.preventDefault();
         var input = e.target.firstChild;
         var data = this.state.data.slice();
@@ -133,9 +138,9 @@ var Excel = React.createClass({
             data: data,
             edit: null
         });
-    },
+    }
 
-    _logSetState : function(newState){
+    _logSetState(newState){
         this._log.push(
             JSON.parse(
                 JSON.stringify(
@@ -145,23 +150,23 @@ var Excel = React.createClass({
         );
         this.setState(newState);
         this._indexState++;
-    },
+    }
 
-    _redo : function() {
+    _redo() {
         if(this._indexState >= this._log.length){
             return;
         }
         this.setState(this._log[this._indexState++]);
-    },
+    }
 
-    _undo : function(){
+    _undo(){
         if(this._indexState===0){
             return;
         }
         this.setState(this._log[--this._indexState]);
-    },
+    }
 
-    _replay : function(){
+    _replay(){
         if(this._log.length === 0){
             console.warn('Não existe estado para apresentar repetição!');
             return;
@@ -174,9 +179,9 @@ var Excel = React.createClass({
             }
             this.setState(this._log[idx]);
         }.bind(this),2000); //passando o contexto {this} com bind que tem suporte apartir do MSIE-9
-    },
+    }
 
-    _download : function(format, ev){
+    _download(format, ev){
         var contents = format === 'json'
             ? JSON.stringify(this.state.data)
             : this.state.data.reduce(function(result, row){
@@ -190,111 +195,88 @@ var Excel = React.createClass({
         var blob = new Blob([contents], {type: 'text/' + format});
         ev.target.href = URL.createObjectURL(blob);
         ev.target.download = 'data.'+format;
-    },
+    }
 
     /*======================================================
      METODOS AUXILIARES - Renderizadores
     ======================================================*/
 
-    _renderToolbar : function(){
-        return React.DOM.div(
-            {className:'toolbar'},
-            React.DOM.button(
-                {onClick: this._toggleSearch},
-                this.state.search?'fechar pesquisa':'abrir pesquisa'
-            ),
-            React.DOM.a(
-                {
-                    onClick:this._download.bind(this, 'json'),
-                    href:'data.json'
-                },
-                'Exportar JSON'
-            ),
-            React.DOM.a(
-                {
-                    onClick:this._download.bind(this, 'csv'),
-                    href:'data.csv'
-                },
-                'Exportar CSV'
-            )
+    _renderToolbar(){
+        return (
+            <div className="toolbar">
+                <button onClick={this._toggleSearch}>{this.state.search?'fechar pesquisa':'abrir pesquisa'}</button>
+                <a onClick={this._download.bind(this, 'json')} href="data.json">Exportar Json</a>
+                <a onClick={this._download.bind(this, 'csv')} href="data.csv">Exportar CSV</a>
+            </div>
         );
-    },
+    }
 
-    _renderSearch : function(){
+    _renderSearch(){
         if(!this.state.search){
             return null;
         }
         return (
-            React.DOM.tr(
-                {onChange: this._search}, //Mágica demonstração de propagação de eventos React
-                this.props.headers.map(function(head, index){
-                    return React.DOM.td(
-                        { key: index },
-                        React.DOM.input(
-                            {
-                                type: 'text',
-                                'data-idx' : index
-                            }
-                        )
-                    )
-                })
-            )
+            <tr onChange={this._search}>
+                {this.props.headers.map((head, index)=>(
+                    <td key={index}>
+                        <input type="text" data-idx={index} />
+                    </td>
+                ))}
+            </tr>
         );
-    },
+    }
 
-    _renderTable : function(){
+    _renderTable(){
         var sortby = this.state.sortby,
             descending = this.state.descending,
             edit = this.state.edit,
             save = this._save;
+
         return (
-            React.DOM.table(
-                null,
-                React.DOM.thead(
-                    {onClick: this._sort},
-                    React.DOM.tr(
-                        null,
-                        this.props.headers.map(function(title, index){
+            <table>
+                <thead onClick={this._sort}>
+                    <tr>
+                        {this.props.headers.map((title, index) => {
                             if(sortby === index){
                                 title += descending ? '\u2191' : '\u2193';
                             }
-                            return React.DOM.th({key:index}, title)
-                        })
-                    )
-                ),
-                React.DOM.tbody(
-                    {onDoubleClick: this._showEditor},
-                    this._renderSearch(),
-                    this.state.data.map(function(row, rowIndex){
+                            return <th key={index}>{title}</th>;
+                        })}
+                    </tr>
+                </thead>
+                <tbody onDoubleClick={this._showEditor}>
+                    {this._renderSearch()}
+                    {this.state.data.map((row, rowIndex) => {
                         return (
-                            React.DOM.tr(
-                                {key: rowIndex},
-                                row.map(function(cell, cellIndex){
-
+                            <tr key={rowIndex}>
+                                {row.map( (cell, cellIndex)=> {
                                     var content = cell;
                                     if(edit && edit.row === rowIndex && edit.cell === cellIndex){
-                                        content = React.DOM.form(
-                                            { onSubmit : save },
-                                            React.DOM.input({
-                                                type: 'text',
-                                                defaultValue : cell
-                                            })
-                                        );
+                                        content = <form onSubmit={save}>
+                                            <input type="text" defaultValue={cell} />
+                                        </form>;
                                     }
 
-                                    return React.DOM.td(
-                                        {
-                                            key: cellIndex,
-                                            'data-row': rowIndex
-                                        },
-                                        content
-                                    )
-                                })
-                            )
+                                    return (<td key={cellIndex} data-row={rowIndex}>{content}</td>);
+                                })}
+                            </tr>
                         );
-                    })
-                )
-            )
+                    })}
+                </tbody>
+            </table>
         );
     }
-});
+}
+
+Excel.propTypes = {
+    headers : PropTypes.arrayOf(
+        PropTypes.string
+    ),
+    initialData : PropTypes.arrayOf(
+        PropTypes.arrayOf(
+            PropTypes.string
+        )
+    )
+};
+
+export default Excel;
