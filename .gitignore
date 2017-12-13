@@ -7,3 +7,11 @@ Whinepad v.0.0.1/bundle.css
 Whinepad v.0.0.1/bundle.js
 Whinepad v.0.0.1/package-lock.json
 Whinepad v.0.0.1/js/build
+
+whinepad/node_modules/
+whinepad/__deployme
+whinepad/bundle.css
+whinepad/bundle.js
+whinepad/discover-bundle.js
+whinepad/package-lock.json
+whinepad/js/build
