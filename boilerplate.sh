@@ -23,12 +23,12 @@ echo "<!DOCTYPE html>
 <html>
     <head>
         <title>Boilerplate App</title>
-        <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="bundle.css">
+        <meta charset=\"utf-8\">
+        <link rel=\"stylesheet\" type=\"text/css\" href=\"bundle.css\">
     </head>
     <body>
-        <div class="main"></div>
-        <script src="bundle.js"></script>
+        <div class=\"main\"></div>
+        <script src=\"bundle.js\"></script>
     </body>
 </html>
 " > index.html
