@@ -28,7 +28,6 @@ class Dialog extends Component {
                                 Cancel</span>
                             : null
                         }
-
                         <Button
                             onClick={this.props.onAction.bind(this, this.props.hasCancel ? 'confirm' : 'dismiss')}
                         >
