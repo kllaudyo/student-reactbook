@@ -129,7 +129,7 @@ class ExcelOne extends Component{
 
     _renderDeleteDialog(){
         const first = this.state.data[this.state.dialog.idx];
-        const nameguess = first[Object.key(first)[0]];
+        const nameguess = first[Object.keys(first)[0]];
         return (
             <Dialog
                 modal={true}

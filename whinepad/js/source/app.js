@@ -2,9 +2,9 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ExcelOne from './components/ExcelOne';
 import Logo from './components/Logo';
 import schema from './schema';
+import Whinepad from "./components/Whinepad";
 
 
 var data = JSON.parse(localStorage.getItem("data"));
@@ -19,7 +19,7 @@ ReactDOM.render(
         <div className="app-header">
             <Logo /> Welcome to Whinepad!
         </div>
-        <ExcelOne initialData={data} schema={schema} />
+        <Whinepad initialData={data} schema={schema} />
     </div>,
     document.getElementById('pad')
 );

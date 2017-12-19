@@ -10,7 +10,7 @@ class Whinepad extends Component{
     constructor(props){
         super(props);
         this.state = {
-            data: proips.initialData,
+            data: props.initialData,
             addnew: false
         };
         this._preSearchData = null;
