@@ -1,8 +1,8 @@
 .Logo {
-  background-image: url('../../images/react-logo.svg');
-  background-size: cover;
+  background-image: url('../../images/wp-logo2.png');
+  background-repeat: no-repeat;
   display: inline-block;
-  height: 50px;
+  height: 80px;
   vertical-align: middle;
-  width: 50px;
+  width: 111px;
 }
