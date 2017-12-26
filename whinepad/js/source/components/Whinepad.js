@@ -68,7 +68,7 @@ class Whinepad extends Component{
             }
             return false;
         });
-        this._setState({data: searchdata});
+        this.setState({data: searchdata});
     }
 
     render(){
@@ -82,7 +82,7 @@ class Whinepad extends Component{
                             + add
                         </Button>
                     </div>
-                    <div className="WhineToolbarSearch">
+                    <div className="WhinepadToolbarSearch">
                         <input
                             placeholder="Search..."
                             onChange={this._search.bind(this)}
@@ -90,7 +90,7 @@ class Whinepad extends Component{
                             onBlur={this._doneSearching.bind(this)} />
                     </div>
                 </div>
-                <div className="WhinepadDatagrip">
+                <div className="WhinepadDatagrid">
                     <ExcelOne
                         schema={this.props.schema}
                         initialData={this.state.data}
