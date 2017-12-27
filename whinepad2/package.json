@@ -14,5 +14,8 @@
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"
+  },
+  "scripts":{
+    "watch" : "watch \"sh scripts\\build.sh\" js\\source css\\"
   }
 }
