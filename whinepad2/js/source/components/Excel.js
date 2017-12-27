@@ -168,7 +168,6 @@ class Excel extends Component{
 
     _replay(){
         if(this._log.length === 0){
-            console.warn('Não existe estado para apresentar repetição!');
             return;
         }
         var idx = -1;
@@ -188,8 +187,6 @@ class Excel extends Component{
                 return result + '"' + row.join('","') + '"\n';
             },'')
         ;
-
-        console.log(contents);
 
         var URL = window.URL || window.webkitURL;
         var blob = new Blob([contents], {type: 'text/' + format});

@@ -6,7 +6,6 @@ import Logo from './components/Logo';
 import schema from './schema';
 import Whinepad from "./components/Whinepad";
 
-
 var data = JSON.parse(localStorage.getItem("data"));
 if(!data){
     data = {};
