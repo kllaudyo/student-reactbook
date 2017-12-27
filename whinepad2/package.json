@@ -16,6 +16,10 @@
     "react-dom": "^16.2.0"
   },
   "scripts":{
-    "watch" : "watch \"sh scripts\\build.sh\" js\\source css\\"
+    "watch" : "watch \"sh scripts\\build.sh\" js\\source css\\",
+    "transpila" : "babel js/source -d js/build",
+    "empacota_js" : "browserify js/build/app.js -o bundle.js & browserify js/build/discover.js -o discover-bundle.js",
+    "empacota_css" : "cat css/*/* css/*.css | sed 's@..\/..\/images@images@' > bundle.css ",
+    "construir" : "npm run transpila & npm run empacota_js & npm run empacota_css"
   }
 }
