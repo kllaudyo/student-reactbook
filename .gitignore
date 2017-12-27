@@ -1,17 +1,9 @@
 .idea/
-app/node_modules/
-app/package-lock.json
-Whinepad v.0.0.1/node_modules/
-Whinepad v.0.0.1/__deployme
-Whinepad v.0.0.1/bundle.css
-Whinepad v.0.0.1/bundle.js
-Whinepad v.0.0.1/package-lock.json
-Whinepad v.0.0.1/js/build
 
-whinepad/node_modules/
-whinepad/__deployme
-whinepad/bundle.css
-whinepad/bundle.js
-whinepad/discover-bundle.js
-whinepad/package-lock.json
-whinepad/js/build
+*/node_modules/
+*/__deployme
+*/bundle.css
+*/bundle.js
+*/discover-bundle.js
+*/package-lock.json
+*/js/build
