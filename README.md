@@ -2,7 +2,7 @@
 Projeto realizado para aprofundar conhecimento no React através do livro ["Primeiros passos com React"](https://novatec.com.br/livros/primeiros-passos-com-react/) da editora [Novatec](http://www.novatec.com.br).
 _Atenção: a versão do React utilizada pelo livro é 0.14.7_
 
-## Meus destaques do livro
+## Marcações!
 
 ### React.DOM x ReactDOM
 
@@ -33,3 +33,24 @@ apropriado.
 A React atualiza a UI quando <code>setState()</code> é chamado. Esse é o cenário mais comum, mas há um ponto de escape 
 ... Você pode evitar que a UI seja atualizada devolvendo <code>false</code> em um método especial do "ciclo de vida" chamado 
 <code>shouldComponentUpdate()</code>.
+
+Para sobrescrever um estado inteiro use <code>replaceState()</code>.
+
+### Eventos
+A React utiliza _eventos sintáticos_ para encapsular e normalizar os eventos dos navegadores, o que significa que não haverá
+inconsistências entre navegadores, isso significa que: <code>event.target.value</code>, <code>event.stopPropagation</code> e
+<code>event.preventDefault()</code> funcionará até em IE antigos.
+
+O uso, juntamente com _jsx_ é semelhante a eventos inline tradicionais <code>onClick={}</code> e usa o camelCase em sua escrita.
+
+Se você precisar do evento nativo do browser use: <code>event.nativeEvent</code>
+
+Por uma questão de velocidade a React utiliza a delegação de eventos(que
+significa que você ouve eventos em algum nó pai e configura um switch, verificar página 42).
+
+### Virtual DOM
+
+Internamente, a React chama o seu método <code>render()</code> e cria uma representação
+de uma árvore leve do DOM resultante desejado, o que é conhecido como *árvore virtual de DOM*.
+Quando o método <code>render()</code> é chamado novamente a React calcula a diferença entre a
+árvoe virtual antes e depois e com base nessa diferença determina as *operações mínimas de DOM necessárias*.
