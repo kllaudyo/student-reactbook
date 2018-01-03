@@ -23,4 +23,11 @@ describe("Renderiza componente Button", () => {
         );
         expect(ReactDOM.findDOMNode(a).children[0].nodeName).toEqual('A');
     });
+
+    it("permite classCss personalizadas", ()=> {
+        const button = ReactTestUtils.renderIntoDocument(<div><Button className="good bye">Hello</Button></div>);
+        const buttonNode = ReactDOM.findDOMNode(button).children[0];
+        expect(buttonNode.getAttribute('class')).toEqual('Button good bye');
+    });
+
 });
