@@ -15,5 +15,12 @@ describe("Renderiza componente Button", () => {
             </div>
         );
         expect(ReactDOM.findDOMNode(button).children[0].nodeName).toEqual('BUTTON');
+
+        const a = ReactTestUtils.renderIntoDocument(
+            <div>
+                <Button href="#">Hello</Button>
+            </div>
+        );
+        expect(ReactDOM.findDOMNode(a).children[0].nodeName).toEqual('A');
     });
 });
