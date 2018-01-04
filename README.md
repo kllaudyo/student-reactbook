@@ -37,7 +37,7 @@ A React atualiza a UI quando <code>setState()</code> é chamado. Esse é o cená
 Para sobrescrever um estado inteiro use <code>replaceState()</code>.
 
 ### Eventos
-A React utiliza _eventos sintáticos_ para encapsular e normalizar os eventos dos navegadores, o que significa que não haverá
+A React utiliza _eventos sintéticos_ para encapsular e normalizar os eventos dos navegadores, o que significa que não haverá
 inconsistências entre navegadores, isso significa que: <code>event.target.value</code>, <code>event.stopPropagation</code> e
 <code>event.preventDefault()</code> funcionará até em IE antigos.
 
@@ -53,4 +53,26 @@ significa que você ouve eventos em algum nó pai e configura um switch, verific
 Internamente, a React chama o seu método <code>render()</code> e cria uma representação
 de uma árvore leve do DOM resultante desejado, o que é conhecido como *árvore virtual de DOM*.
 Quando o método <code>render()</code> é chamado novamente a React calcula a diferença entre a
-árvoe virtual antes e depois e com base nessa diferença determina as *operações mínimas de DOM necessárias*.
+árvore virtual antes e depois e com base nessa diferença determina as *operações mínimas de DOM necessárias*.
+
+### Use componentes funcionais
+Por uma questão de desempenho, se um componente não precisa manter um estado, use uma função para defini-lo. O corpo
+da função é o substituto para o seu método <code>render()</code> e seu primeiro argumento é <code>props</code>.
+
+<code>
+const Button = props => (<button type={prop.type}>prop.value</button>);
+</code>
+
+### Use propriedades estáticas
+Se você usa a sintaxe ES6 ou componentes funcionais, *você deve definir qualquer propriedade, por exemplo <code>PropTypes</code>
+como estática depois da definição do componente.
+
+<code>
+Button.propTypes = {
+/*definições*/
+}
+</code>
+
+### Atributo <code>ref</code>
+Usado para vincular elementos do DOM. *Com frequência, usar <code>ref</code> é uma solução de contorno, e pode haver
+outras maneiras de fazer o mesmo.
