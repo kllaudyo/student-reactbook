@@ -42,5 +42,24 @@ describe('Editing data', () => {
         expect(callback.mock.calls[0][0][0].name).toBe(newname);
 
     });
+
+    it('delete data', () => {
+        const callback = jest.genMockFunction();
+        const table = ReactTestUtils.renderIntoDocument(
+            <ExcelOne
+                schema={schema}
+                initialData={data}
+                onDataChange={callback}
+            />
+        );
+        ReactTestUtils.Simulate.click(
+            ReactTestUtils.findRenderedDOMComponentWithClass(table, 'ActionDelete')
+        );
+        ReactTestUtils.Simulate.click(
+            ReactTestUtils.findRenderedDOMComponentWithClass(table, 'Button')
+        );
+
+        expect(callback.mock.calls[0][0].length).toBe(0);
+    })
 });
 
