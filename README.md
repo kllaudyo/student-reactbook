@@ -76,3 +76,6 @@ Button.propTypes = {
 ### Atributo <code>ref</code>
 Usado para vincular elementos do DOM. *Com frequência, usar <code>ref</code> é uma solução de contorno, e pode haver
 outras maneiras de fazer o mesmo.
+
+### Fonte única da verdade
+Um componente de UI(a React tem tudo a ver com UI) não deve guardar a fonte da verdade.
