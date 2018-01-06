@@ -1,5 +1,8 @@
+import {EventEmitter} from 'fbemitter';
+
 let data;
 let schema;
+const emitter = new EventEmitter();
 
 const CRUDStore = {
     init(initialSchema){
@@ -25,7 +28,10 @@ const CRUDStore = {
         if(commit && 'localStorage' in window){
             localStorage.setItem('data', JSON.stringify(data));
         }
-        emmiter.emit('change');
+        emitter.emit('change');
+    },
+    addListener(eventType, cb){
+        emitter.addListener(eventType, cb);
     },
     getCount(){
         return data.length;
