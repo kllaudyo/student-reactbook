@@ -14,7 +14,7 @@ ReactDOM.render(
         <div className="app-header">
             <Logo /> Welcome to Whinepad!
         </div>
-        <Whinepad initialData={Store.getData()} schema={schema} />
+        <Whinepad />
     </div>,
     document.getElementById('pad')
 );
