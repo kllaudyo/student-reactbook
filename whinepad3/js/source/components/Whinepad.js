@@ -4,16 +4,30 @@ import ExcelOne from './ExcelOne';
 import Form from './Form';
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import Store from "../flux/Store";
 
 class Whinepad extends Component{
 
     constructor(props){
         super(props);
         this.state = {
-            data: props.initialData,
-            addnew: false
+            addnew: false,
+            count: Store.getCount()
         };
         this._preSearchData = null;
+        this._updateCount = this._updateCount.bind(this);
+    }
+
+    componentDidMount(){
+        Store.addListener('change', this._updateCount);
+    }
+
+    shouldComponentUpdate(newProps, newState){
+        return newState.addnew !== this.state.addnew || newState.count !== this.state.count;
+    }
+
+    _updateCount(){
+        this.setState({count:Store.getCount()});
     }
 
     _addNewDialog(){
@@ -25,26 +39,26 @@ class Whinepad extends Component{
             this.setState({addnew:false});
             return;
         }
-        let data = Array.from(this.state.data);
+        // let data = Array.from(this.state.data);
+        let data = Array.from(Store.getData());
         data.unshift(this.refs.form.getData());
         this.setState({
-            addnew: false,
-            data: data
+            addnew: false
         });
-        this._commitToStorage(data);
     }
 
-    _onExcelDataChange(data){
-        this.setState({data:data});
-        this._commitToStorage(data);
-    }
+    // _onExcelDataChange(data){
+    //     this.setState({data:data});
+    //     this._commitToStorage(data);
+    // }
 
-    _commitToStorage(data){
-        localStorage.setItem('data',JSON.stringify(data));
-    }
+    // static _commitToStorage(data){
+    //     localStorage.setItem('data',JSON.stringify(data));
+    // }
 
     _startSearching(){
-        this._preSearchData = this.state.data;
+        //this._preSearchData = this.state.data;
+        this._preSearchData = Store.getData();
     }
 
     _doneSearching(){
@@ -56,7 +70,7 @@ class Whinepad extends Component{
     _search(e){
         const needle = e.target.value.toLowerCase();
         if(!needle){
-            this.setState({data:this._preSearchData})
+            this.setState({data:this._preSearchData});
             return;
         }
         const fields = this.props.schema.map(item => item.id);
@@ -72,6 +86,7 @@ class Whinepad extends Component{
     }
 
     render(){
+        const {count} = this.state;
         return (
             <div className="Whinepad">
                 <div className="WhinepadToolbar">
@@ -84,18 +99,16 @@ class Whinepad extends Component{
                     </div>
                     <div className="WhinepadToolbarSearch">
                         <input
-                            placeholder="Search..."
+                            placeholder={
+                                count === 1 ? 'Search 1 record...' : `Search ${count} records...`
+                            }
                             onChange={this._search.bind(this)}
                             onFocus={this._startSearching.bind(this)}
                             onBlur={this._doneSearching.bind(this)} />
                     </div>
                 </div>
                 <div className="WhinepadDatagrid">
-                    <ExcelOne
-                        schema={this.props.schema}
-                        initialData={this.state.data}
-                        onDataChange={this._onExcelDataChange.bind(this)}
-                    />
+                    <ExcelOne />
                 </div>
                 {
                     this.state.addnew
