@@ -6,22 +6,34 @@ import Rating from './Rating';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import Store from "../flux/Store";
 
 class ExcelOne extends Component{
 
     constructor(props) {
         super(props);
         this.state = {
-            data: this.props.initialData,
+            data: Store.getData(),
             sortby: null, //schema.id
             descending: false,
             edit: null, //[row index, schema.id]
             dialog: null, //{type, idx}
         };
+        this.schema = Store.getSchema();
+        this._setData = this._setData.bind(this);
     }
+
+    componentDidMount(){
+        Store.addListener('change',this._setData);
+    }
+
 
     componentWillReceiveProps(nextProps) {
         this.setState({data: nextProps.initialData});
+    }
+
+    _setData(){
+        this.setState({data:Store.getData()});
     }
 
     _fireDataChange(data) {
@@ -151,7 +163,7 @@ class ExcelOne extends Component{
                 onAction={this._saveDataDialog.bind(this)}>
                 <Form
                     ref="form"
-                    fields={this.props.schema}
+                    fields={this.schema}
                     initialData={this.state.data[this.state.dialog.idx]}
                     readonly={readonly}
                 />
@@ -164,7 +176,7 @@ class ExcelOne extends Component{
             <table>
                 <thead>
                     <tr>
-                        {this.props.schema.map( item => {
+                        {this.schema.map( item => {
                             if(!item.show){
                                 return null;
                             }
@@ -190,7 +202,7 @@ class ExcelOne extends Component{
                         return (
                             <tr key={rowidx}>{
                                 Object.keys(row).map((cell, idx) => {
-                                    const schema = this.props.schema[idx];
+                                    const schema = this.schema[idx];
                                     if(!schema || !schema.show){
                                         return null;
                                     }
